@@ -1,11 +1,27 @@
 <html>
-  <head>
-    <title>VR + Spinner!</title>
-  </head>
-  <body>
-    <button id="connect">
-      Connect!
-    </button>
-    <script type="module" src="main.js"></script>
-  </body>
+
+<head>
+  <title>VR + Spinner!</title>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/aframe/0.7.1/aframe.min.js"></script>
+  <script src="//rawgit.com/urish/aframe-fireball-component/1.1.0/index.js"></script>
+</head>
+
+<body>
+  <button id="connect">
+    Connect!
+  </button>
+
+  <a-scene>
+    <a-sky color="black"></a-sky>
+    <a-entity id="spinner">
+      <a-sphere fireball position='0 1.5 -5'></a-sphere>
+      <a-sphere fireball="color: red;" position='4.33 1.5 2.5'></a-sphere>
+      <a-sphere fireball="color: green;" position='-4.33 1.5 2.5'></a-sphere>
+    </a-sphere>
+  </a-scene>
+
+  <script type="module" src="main.js"></script>
+</body>
+
 </html>
