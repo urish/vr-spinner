@@ -1,7 +1,7 @@
 import { SpinnerClient } from './spinner-client.js';
 
 const client = new SpinnerClient();
-const rootEntity = document.querySelector('#spinner');
+const rootEntity = document.querySelector('#sphere1');
 
 document.getElementById('connect').onclick = () => {
   client.connect();
@@ -10,13 +10,14 @@ document.getElementById('connect').onclick = () => {
 let speed = 0;
 let lastSpinTime = 0;
 let lastSpinEvent = 0;
+let nextSpeed = 0;
 client.addListener(spin => {
   if (!spin.state) {
     const delta = spin.time - lastSpinTime;
-    if (delta && (delta < 1)) {
-      speed = 10 / delta;
+    if (delta && (delta < 1000)) {
+      nextSpeed = 10 / delta;
     } else if (delta > 1) {
-      speed = 0;
+      nextSpeed = 0;
     }
     lastSpinTime = spin.time;
     lastSpinEvent = new Date().getTime();
@@ -26,15 +27,18 @@ client.addListener(spin => {
 let rotation = 0;
 let lastRotateTime = 0;
 function doFrame() {
-  if (speed) {
-    const delta = new Date().getTime() - lastRotateTime;
-    rotation += delta * speed / 1000.;
-    lastRotateTime = new Date().getTime();
-    rootEntity.setAttribute('rotation', `0 ${rotation} 0`);
-    if (new Date().getTime() - lastSpinEvent > 1000.0) {
-      speed = 0;
-    }
+  if (speed < nextSpeed) {
+    speed += 1;
   }
+  if (speed > nextSpeed) {
+    speed -= 1;
+  }
+    if (speed && (new Date().getTime() - lastSpinEvent > 1000.0)) {
+    speed = 0;
+  }
+  const s = 1 + speed / 400;
+  rootEntity.setAttribute('fireball', { brightness: speed / 100.0, speed: speed / 100.0 });
+  rootEntity.setAttribute('scale', `${s} ${s} ${s}`);
   requestAnimationFrame(doFrame);
 }
 
